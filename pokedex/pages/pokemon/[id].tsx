@@ -38,21 +38,24 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({ pokemon }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20'); // Limitez pour des tests
+  const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20');
   const pokemonList = response.data.results;
 
-  const paths = pokemonList.map((pokemon: { url: string }, index: number) => ({
-    params: { id: (index + 1).toString() }, // Les IDs des Pokémon commencent à 1
-  }));
+  const paths = pokemonList.map((pokemon: { url: string }) => {
+    const id = pokemon.url.split('/')[6]; // Extrait l'ID à partir de l'URL
+    return { params: { id } }; // Utilise l'ID dans les params
+  });
 
   return {
     paths,
-    fallback: 'blocking', // Permet le chargement dynamique pour des Pokémon non inclus initialement
+    fallback: 'blocking', // Assure-toi que la page est générée dynamiquement pour tous les Pokémon
   };
 };
 
+
+
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { id } = context.params!;
+  const { id } = context.params!; // `id` ici sera le nom du Pokémon
   const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
   const pokemon = response.data;
 
@@ -61,4 +64,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default PokemonDetail;
+export default PokemonDetail; 
