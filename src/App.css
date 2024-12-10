@@ -1,0 +1,31 @@
+.title {
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+}
+
+.fixed-title {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: black;
+    z-index: 1000;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+.custom-select {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+}
