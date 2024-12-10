@@ -1,4 +1,3 @@
-// pages/pokemon/[id].tsx
 import axios from 'axios';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
@@ -64,4 +63,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default PokemonDetail;
+export default PokemonDetail; 
