@@ -1,6 +1,6 @@
-// components/PokemonCard.tsx
 import React from 'react';
 import Link from 'next/link';
+import styles from './PokemonCard.module.css';
 
 interface PokemonCardProps {
   id: number;
@@ -10,14 +10,16 @@ interface PokemonCardProps {
   hp: number;
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, type, hp }) => {
+const PokemonCard: React.FC<PokemonCardProps> = ({name, image, type, hp }) => {
   return (
     <Link href={`/pokemon/${name}`} passHref>
-      <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px', margin: '10px', cursor: 'pointer' }}>
-        <img src={image} alt={name} width={100} height={100} />
-        <h3>{name}</h3>
-        <p>Type: {type.join(', ')}</p>
-        <p>HP: {hp}</p>
+      <div className={styles.card}>
+        <img src={image} alt={name} className={styles.image} />
+        <h3 className={styles.title}>
+          <span>{name}</span>
+        </h3>
+        <p className={styles.type}>Type: {type.join(', ')}</p>
+        <p className={styles.hp}>HP: {hp}</p>
       </div>
     </Link>
   );
