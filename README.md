@@ -1,2 +1,1 @@
-Timothée De Vasselot
-Blaise Duplantier
+Timothée De Vasselot et Blaise Duplantier
