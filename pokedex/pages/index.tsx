@@ -1,7 +1,7 @@
 // pages/index.tsx
-import { useState, useEffect } from 'react';
 import axios from 'axios';
-import PokemonCard from '../components/PokemonCard.module';
+import PokemonCard from '../components/PokemonCard';
+import React, { useState, useEffect } from 'react';
 
 interface Pokemon {
   id: number;
@@ -11,42 +11,15 @@ interface Pokemon {
   sprites: { front_default: string };
 }
 
-const HomePage: React.FC = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [sortedPokemons, setSortedPokemons] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [sortCriteria, setSortCriteria] = useState<string>('id-asc');
+interface HomePageProps {
+  pokemons: Pokemon[];
+}
 
-  useEffect(() => {
-    const fetchAllPokemons = async () => {
-      try {
-        setLoading(true);
+const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
+  const [sortedPokemons, setSortedPokemons] = React.useState<Pokemon[]>(pokemons);
+  const [sortCriteria, setSortCriteria] = React.useState<string>('id-asc');
 
-        // Récupération de tous les Pokémon (1010 max)
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=1025`);
-        const pokemonList = response.data.results;
-
-        // Récupération des détails de chaque Pokémon
-        const allPokemons = await Promise.all(
-          pokemonList.map(async (pokemon: { url: string }) => {
-            const details = await axios.get(pokemon.url);
-            return details.data;
-          })
-        );
-
-        setPokemons(allPokemons);
-        setSortedPokemons(allPokemons);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Pokémon:', error);
-      }
-    };
-
-    fetchAllPokemons();
-  }, []);
-
-  // Tri des Pokémon en fonction du critère choisi
-  useEffect(() => {
+  React.useEffect(() => {
     const sorted = [...pokemons];
 
     if (sortCriteria === 'id-asc') {
@@ -68,7 +41,7 @@ const HomePage: React.FC = () => {
     }
 
     setSortedPokemons(sorted);
-  }, [pokemons, sortCriteria]);
+  }, [sortCriteria, pokemons]);
 
   return (
     <div>
@@ -90,8 +63,7 @@ const HomePage: React.FC = () => {
         </select>
       </div>
 
-      {loading && <p>Chargement de tous les Pokémon...</p>}
-
+      {/* Liste des Pokémon */}
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {sortedPokemons.map((pokemon) => (
           <PokemonCard
@@ -107,5 +79,22 @@ const HomePage: React.FC = () => {
     </div>
   );
 };
+
+// Utilisation de getStaticProps pour SSG
+export async function getStaticProps() {
+  const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=151`); // Limite à 151 pour la première génération
+  const pokemonList = response.data.results;
+
+  const pokemons = await Promise.all(
+    pokemonList.map(async (pokemon: { url: string }) => {
+      const details = await axios.get(pokemon.url);
+      return details.data;
+    })
+  );
+
+  return {
+    props: { pokemons }, // Les données sont passées comme props à la page
+  };
+}
 
 export default HomePage;

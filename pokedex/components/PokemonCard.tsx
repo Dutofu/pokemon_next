@@ -53,7 +53,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, type, hp }) 
           margin: '10px',
           cursor: 'pointer',
           textAlign: 'center',
-          textDecoration: 'none', // Supprime le soulignement
+          textDecoration: 'none',
         }}
       >
         <img src={image} alt={name} width={100} height={100} />
