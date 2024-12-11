@@ -1,7 +1,6 @@
-// pages/index.tsx
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import PokemonCard from '../components/PokemonCard';
+import axios from 'axios';
 
 interface Pokemon {
   id: number;
@@ -11,39 +10,13 @@ interface Pokemon {
   sprites: { front_default: string };
 }
 
-const HomePage: React.FC = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [sortedPokemons, setSortedPokemons] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState(true);
+interface HomePageProps {
+  pokemons: Pokemon[];
+}
+
+const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
+  const [sortedPokemons, setSortedPokemons] = useState<Pokemon[]>(pokemons);
   const [sortCriteria, setSortCriteria] = useState<string>('id-asc');
-
-  useEffect(() => {
-    const fetchAllPokemons = async () => {
-      try {
-        setLoading(true);
-
-        // Récupération de tous les Pokémon (1010 max)
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=1025`);
-        const pokemonList = response.data.results;
-
-        // Récupération des détails de chaque Pokémon
-        const allPokemons = await Promise.all(
-          pokemonList.map(async (pokemon: { url: string }) => {
-            const details = await axios.get(pokemon.url);
-            return details.data;
-          })
-        );
-
-        setPokemons(allPokemons);
-        setSortedPokemons(allPokemons);
-        setLoading(false);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des Pokémon:', error);
-      }
-    };
-
-    fetchAllPokemons();
-  }, []);
 
   // Tri des Pokémon en fonction du critère choisi
   useEffect(() => {
@@ -89,8 +62,6 @@ const HomePage: React.FC = () => {
           <option value="speed-desc">Du plus rapide au moins rapide</option>
         </select>
       </div>
-
-      {loading && <p>Chargement de tous les Pokémon...</p>}
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {sortedPokemons.map((pokemon) => (
