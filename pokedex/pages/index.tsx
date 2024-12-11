@@ -1,6 +1,7 @@
+// pages/index.tsx
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import PokemonCard from '../components/PokemonCard.module';
+import PokemonCard from '../components/PokemonCard';
 
 interface Pokemon {
   id: number;
@@ -106,5 +107,21 @@ const HomePage: React.FC = () => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=151`);
+  const pokemonList = response.data.results;
+
+  const pokemons = await Promise.all(
+    pokemonList.map(async (pokemon: { url: string }) => {
+      const details = await axios.get(pokemon.url);
+      return details.data;
+    })
+  );
+
+  return {
+    props: { pokemons }, // Les données sont passées comme props à la page
+  };
+}
 
 export default HomePage;

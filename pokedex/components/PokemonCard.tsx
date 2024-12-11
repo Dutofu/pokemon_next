@@ -41,22 +41,67 @@ interface PokemonCardProps {
   hp: number;
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, type, hp }) => {
+const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, type, hp }) => {
   return (
     <Link href={`/pokemon/${name}`} passHref style={{ textDecoration: 'none' }}>
       <div
         style={{
-          border: '1px solid #ccc',
-          padding: '10px',
-          borderRadius: '5px',
-          margin: '10px',
+          border: '1px solid #d1d1d1',
+          borderRadius: '12px',
+          padding: '16px',
+          margin: '16px',
+          background: 'linear-gradient(145deg, #f8f8f8, #e0e0e0)',
+          boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(255, 255, 255, 0.1)',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           cursor: 'pointer',
           textAlign: 'center',
-          textDecoration: 'none', // Supprime le soulignement
+          position: 'relative',
+          overflow: 'hidden',
+          height: '300px',
+          width: '220px',
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-8px)';
+          (e.currentTarget as HTMLDivElement).style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.2)';
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+          (e.currentTarget as HTMLDivElement).style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(255, 255, 255, 0.1)';
         }}
       >
-        <img src={image} alt={name} width={100} height={100} />
-        <h3>{name}</h3>
+        <img
+          src={image}
+          alt={name}
+          style={{
+            width: '120px',
+            height: '120px',
+            objectFit: 'cover',
+            margin: '0 auto 16px',
+            borderRadius: '50%',
+            border: '2px solid #888',
+            background: 'radial-gradient(circle at center, #fff 50%, transparent 70%)',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+            transition: 'transform 0.3s ease',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)';
+          }}
+        />
+        <h3
+          style={{
+            fontSize: '1.4rem',
+            fontWeight: 'bold',
+            margin: '8px 0',
+            color: '#2c3e50',
+            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.1)',
+            textTransform: 'capitalize',
+          }}
+        >
+          {name}
+        </h3>
 
         {/* Affichage des types avec couleur de fond */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '5px', margin: '10px 0' }}>
@@ -73,7 +118,8 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, type, hp }) 
                   padding: '5px 10px',
                   borderRadius: '5px',
                   fontSize: '0.9em',
-                  textDecoration: 'none', // Supprime le soulignement
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.15)',
                 }}
               >
                 {t}
@@ -82,7 +128,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, type, hp }) 
           })}
         </div>
 
-        <p>HP: {hp}</p>
+        <p style={{ fontSize: '1rem', fontWeight: '500', color: '#e74c3c' }}>HP: {hp}</p>
       </div>
     </Link>
   );
