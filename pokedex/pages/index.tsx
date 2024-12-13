@@ -17,35 +17,47 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
   const [sortedPokemons, setSortedPokemons] = useState<Pokemon[]>(pokemons);
   const [sortCriteria, setSortCriteria] = useState<string>('id-asc');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Tri des Pokémon en fonction du critère choisi
   useEffect(() => {
-    const sorted = [...pokemons];
+    let filteredPokemons = pokemons.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     if (sortCriteria === 'id-asc') {
-      sorted.sort((a, b) => a.id - b.id); // Du premier au dernier
+      filteredPokemons.sort((a, b) => a.id - b.id); // Du premier au dernier
     } else if (sortCriteria === 'id-desc') {
-      sorted.sort((a, b) => b.id - a.id); // Du dernier au premier
+      filteredPokemons.sort((a, b) => b.id - a.id); // Du dernier au premier
     } else if (sortCriteria === 'speed-asc') {
-      sorted.sort((a, b) => {
+      filteredPokemons.sort((a, b) => {
         const speedA = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         const speedB = b.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         return speedA - speedB;
       }); // Du moins rapide au plus rapide
     } else if (sortCriteria === 'speed-desc') {
-      sorted.sort((a, b) => {
+      filteredPokemons.sort((a, b) => {
         const speedA = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
-        const speedB = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
+        const speedB = b.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         return speedB - speedA;
       }); // Du plus rapide au moins rapide
     }
 
-    setSortedPokemons(sorted);
-  }, [pokemons, sortCriteria]);
+    setSortedPokemons(filteredPokemons);
+  }, [pokemons, sortCriteria, searchQuery]);
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Pokédex</h1>
+
+      {/* Barre de recherche */}
+      <input
+        type="text"
+        placeholder="Rechercher un Pokémon..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        style={styles.searchBar}
+      />
 
       {/* Menu de tri */}
       <div style={styles.sortMenu}>
@@ -65,7 +77,7 @@ const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
           style={{ ...styles.button, ...(sortCriteria === 'speed-asc' ? styles.activeButton : {}) }}
           onClick={() => setSortCriteria('speed-asc')}
         >
-          Vitesse 
+          Vitesse ↑
         </button>
         <button
           style={{ ...styles.button, ...(sortCriteria === 'speed-desc' ? styles.activeButton : {}) }}
@@ -121,6 +133,14 @@ const styles = {
     fontSize: '2.5rem',
     color: '#2c3e50',
     marginBottom: '20px',
+  },
+  searchBar: {
+    width: '80%',
+    padding: '10px',
+    marginBottom: '20px',
+    fontSize: '1rem',
+    border: '2px solid #3498db',
+    borderRadius: '20px',
   },
   sortMenu: {
     display: 'flex',

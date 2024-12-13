@@ -1,60 +1,220 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: linear-gradient(145deg, #f8f8f8, #e0e0e0);
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    text-transform: capitalize;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  
-  .image {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #3498db;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    margin-bottom: 20px;
-  }
-  
-  .info {
-    font-size: 1rem;
-    color: #555;
-    margin: 10px 0;
-    line-height: 1.5;
-  }
-  
-  .stats {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .stats li {
-    margin: 6px 0;
-    font-size: 0.95rem;
-    font-weight: bold;
-    color: #34495e;
-  }
-  
-  .type {
-    display: inline-block;
-    padding: 6px 12px;
-    margin: 5px;
-    background-color: #3498db;
-    color: white;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-    text-transform: capitalize;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(145deg, #f8f8f8, #e0e0e0);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Ajout de styles dynamiques pour le fond en fonction du type principal */
+.normal {
+  background-color: #f8f8f8;
+}
+
+.fire {
+  background-color: #f08030;
+}
+
+.water {
+  background-color: #6890f0;
+}
+
+.electric {
+  background-color: #f8d030;
+}
+
+.grass {
+  background-color: #78c850;
+}
+
+.ice {
+  background-color: #98d8d8;
+}
+
+.fighting {
+  background-color: #c03028;
+}
+
+.poison {
+  background-color: #a040a0;
+}
+
+.ground {
+  background-color: #e0c068;
+}
+
+.flying {
+  background-color: #a890f0;
+}
+
+.psychic {
+  background-color: #f85888;
+}
+
+.bug {
+  background-color: #a8b820;
+}
+
+.rock {
+  background-color: #b8a038;
+}
+
+.ghost {
+  background-color: #705898;
+}
+
+.dragon {
+  background-color: #7038f8;
+}
+
+.dark {
+  background-color: #705848;
+}
+
+.steel {
+  background-color: #b8b8d0;
+}
+
+.fairy {
+  background-color: #f0b6bc;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid #ccc; /* Couleur par défaut */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
+}
+
+/* Bordures dynamiques par type */
+.normal {
+  border-color: #a8a878;
+}
+
+.fire {
+  border-color: #f08030;
+}
+
+.water {
+  border-color: #6890f0;
+}
+
+.electric {
+  border-color: #f8d030;
+}
+
+.grass {
+  border-color: #78c850;
+}
+
+.ice {
+  border-color: #98d8d8;
+}
+
+.fighting {
+  border-color: #c03028;
+}
+
+.poison {
+  border-color: #a040a0;
+}
+
+.ground {
+  border-color: #e0c068;
+}
+
+.flying {
+  border-color: #a890f0;
+}
+
+.psychic {
+  border-color: #f85888;
+}
+
+.bug {
+  border-color: #a8b820;
+}
+
+.rock {
+  border-color: #b8a038;
+}
+
+.ghost {
+  border-color: #705898;
+}
+
+.dragon {
+  border-color: #7038f8;
+}
+
+.dark {
+  border-color: #705848;
+}
+
+.steel {
+  border-color: #b8b8d0;
+}
+
+.fairy {
+  border-color: #f0b6bc;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.info {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.typesContainer {
+  margin-bottom: 15px;
+}
+
+.type {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: white;
+  text-transform: capitalize;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Reste inchangé pour les statistiques */
+.stats {
+  list-style-type: none;
+  padding: 0;
+}
+
+.stats li {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #34495e;
+}
+
+.statName {
+  text-transform: capitalize;
+}

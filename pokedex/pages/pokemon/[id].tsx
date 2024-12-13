@@ -15,23 +15,35 @@ interface PokemonDetailProps {
 }
 
 const PokemonDetail: React.FC<PokemonDetailProps> = ({ pokemon }) => {
+  const mainType = pokemon.types[0].type.name; // Premier type du Pokémon
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles[mainType]}`}>
       <h1 className={styles.title}>{pokemon.name}</h1>
-      <img src={pokemon.sprites.front_default} alt={pokemon.name} className={styles.image} />
-      <p className={styles.info}>Height: {pokemon.height} decimetres</p>
-      <p className={styles.info}>Weight: {pokemon.weight} hectograms</p>
-      <div>
+      <img
+        src={pokemon.sprites.front_default}
+        alt={pokemon.name}
+        className={`${styles.image} ${styles[mainType]}`} // Bordure dynamique
+      />
+      <div className={styles.infoContainer}>
+        <p className={styles.info}>
+          <strong>Height:</strong> {pokemon.height} dm
+        </p>
+        <p className={styles.info}>
+          <strong>Weight:</strong> {pokemon.weight} hg
+        </p>
+      </div>
+      <div className={styles.typesContainer}>
         {pokemon.types.map((type) => (
-          <span key={type.type.name} className={styles.type}>
+          <span key={type.type.name} className={`${styles.type} ${styles[type.type.name]}`}>
             {type.type.name}
           </span>
         ))}
       </div>
       <ul className={styles.stats}>
         {pokemon.stats.map((stat) => (
-          <li key={stat.stat.name}>
-            {stat.stat.name}: {stat.base_stat}
+          <li key={stat.stat.name} className={styles.statItem}>
+            <span className={styles.statName}>{stat.stat.name}:</span> {stat.base_stat}
           </li>
         ))}
       </ul>
@@ -63,4 +75,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default PokemonDetail; 
+export default PokemonDetail;
