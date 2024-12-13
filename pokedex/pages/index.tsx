@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import PokemonCard from '../components/PokemonCard';
 import axios from 'axios';
 
@@ -18,33 +18,48 @@ const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
   const [sortedPokemons, setSortedPokemons] = useState<Pokemon[]>(pokemons);
   const [sortCriteria, setSortCriteria] = useState<string>('id-asc');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>(''); // Ajout de l'état pour le type sélectionné
 
-  // Tri des Pokémon en fonction du critère choisi
+  const pokemonTypes = [
+    'normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 
+    'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 
+    'steel', 'fairy'
+  ];
+
+  // Filtrage et tri des Pokémon
   useEffect(() => {
     let filteredPokemons = pokemons.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // Filtrage par type si un type est sélectionné
+    if (selectedType) {
+      filteredPokemons = filteredPokemons.filter((pokemon) =>
+        pokemon.types.some((type) => type.type.name === selectedType)
+      );
+    }
+
+    // Tri des Pokémon selon le critère choisi
     if (sortCriteria === 'id-asc') {
-      filteredPokemons.sort((a, b) => a.id - b.id); // Du premier au dernier
+      filteredPokemons.sort((a, b) => a.id - b.id);
     } else if (sortCriteria === 'id-desc') {
-      filteredPokemons.sort((a, b) => b.id - a.id); // Du dernier au premier
+      filteredPokemons.sort((a, b) => b.id - a.id);
     } else if (sortCriteria === 'speed-asc') {
       filteredPokemons.sort((a, b) => {
         const speedA = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         const speedB = b.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         return speedA - speedB;
-      }); // Du moins rapide au plus rapide
+      });
     } else if (sortCriteria === 'speed-desc') {
       filteredPokemons.sort((a, b) => {
         const speedA = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         const speedB = b.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         return speedB - speedA;
-      }); // Du plus rapide au moins rapide
+      });
     }
 
     setSortedPokemons(filteredPokemons);
-  }, [pokemons, sortCriteria, searchQuery]);
+  }, [pokemons, sortCriteria, searchQuery, selectedType]); // Ajout de selectedType dans les dépendances
 
   return (
     <div style={styles.container}>
@@ -58,6 +73,20 @@ const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
         style={styles.searchBar}
       />
+
+      {/* Filtre par type */}
+      <select 
+        value={selectedType} 
+        onChange={(e) => setSelectedType(e.target.value)} 
+        style={styles.filterMenu}
+      >
+        <option value="">Tous les types</option>
+        {pokemonTypes.map((type) => (
+          <option key={type} value={type}>
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </option>
+        ))}
+      </select>
 
       {/* Menu de tri */}
       <div style={styles.sortMenu}>
@@ -115,7 +144,7 @@ export async function getStaticProps() {
   );
 
   return {
-    props: { pokemons }, // Les données sont passées comme props à la page
+    props: { pokemons },
   };
 }
 
@@ -141,6 +170,14 @@ const styles = {
     fontSize: '1rem',
     border: '2px solid #3498db',
     borderRadius: '20px',
+  },
+  filterMenu: {
+    padding: '10px',
+    marginBottom: '20px',
+    fontSize: '1rem',
+    borderRadius: '12px',
+    border: '2px solid #3498db',
+    backgroundColor: 'white',
   },
   sortMenu: {
     display: 'flex',

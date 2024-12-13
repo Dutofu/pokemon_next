@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link'; // Importer Link de Next.js
 import styles from './PokemonDetail.module.css';
 
 interface PokemonDetailProps {
@@ -47,6 +48,13 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({ pokemon }) => {
           </li>
         ))}
       </ul>
+
+      {/* Ajouter le bouton pour revenir à la page d'accueil */}
+      <div className={styles.buttonContainer}>
+        <Link href="/" passHref>
+          <button className={styles.backButton}>Retour à l'accueil</button>
+        </Link>
+      </div>
     </div>
   );
 };

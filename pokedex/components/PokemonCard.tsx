@@ -39,9 +39,10 @@ interface PokemonCardProps {
   image: string;
   type: string[];
   hp: number;
+  generation: number;  // Ajout du champ génération
 }
 
-const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, type, hp }) => {
+const PokemonCard: React.FC<PokemonCardProps> = ({ id, name, image, type, hp, generation }) => {
   return (
     <Link href={`/pokemon/${name}`} passHref style={{ textDecoration: 'none' }}>
       <div
@@ -69,6 +70,9 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name, image, type, hp }) => {
           (e.currentTarget as HTMLDivElement).style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1), 0 -2px 4px rgba(255, 255, 255, 0.1)';
         }}
       >
+        {/* Affichage du numéro du Pokémon */}
+        <div className="pokemon-number">{`#${id}`}</div>
+
         <img
           src={image}
           alt={name}
