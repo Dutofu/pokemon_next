@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'; 
 import PokemonCard from '../components/PokemonCard';
 import axios from 'axios';
 
@@ -35,7 +35,7 @@ const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
     } else if (sortCriteria === 'speed-desc') {
       sorted.sort((a, b) => {
         const speedA = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
-        const speedB = b.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
+        const speedB = a.stats.find((stat) => stat.stat.name === 'speed')?.base_stat || 0;
         return speedB - speedA;
       }); // Du plus rapide au moins rapide
     }
@@ -44,26 +44,38 @@ const HomePage: React.FC<HomePageProps> = ({ pokemons }) => {
   }, [pokemons, sortCriteria]);
 
   return (
-    <div>
-      <h1>Pokédex</h1>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Pokédex</h1>
 
       {/* Menu de tri */}
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="sort">Trier par : </label>
-        <select
-          id="sort"
-          value={sortCriteria}
-          onChange={(e) => setSortCriteria(e.target.value)}
-          style={{ marginLeft: '10px', padding: '5px' }}
+      <div style={styles.sortMenu}>
+        <button
+          style={{ ...styles.button, ...(sortCriteria === 'id-asc' ? styles.activeButton : {}) }}
+          onClick={() => setSortCriteria('id-asc')}
         >
-          <option value="id-asc">Du premier au dernier (Pokedex)</option>
-          <option value="id-desc">Du dernier au premier (Pokedex)</option>
-          <option value="speed-asc">Du moins rapide au plus rapide</option>
-          <option value="speed-desc">Du plus rapide au moins rapide</option>
-        </select>
+          Pokedex ↑
+        </button>
+        <button
+          style={{ ...styles.button, ...(sortCriteria === 'id-desc' ? styles.activeButton : {}) }}
+          onClick={() => setSortCriteria('id-desc')}
+        >
+          Pokedex ↓
+        </button>
+        <button
+          style={{ ...styles.button, ...(sortCriteria === 'speed-asc' ? styles.activeButton : {}) }}
+          onClick={() => setSortCriteria('speed-asc')}
+        >
+          Vitesse 
+        </button>
+        <button
+          style={{ ...styles.button, ...(sortCriteria === 'speed-desc' ? styles.activeButton : {}) }}
+          onClick={() => setSortCriteria('speed-desc')}
+        >
+          Vitesse ↓
+        </button>
       </div>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div style={styles.cardContainer}>
         {sortedPokemons.map((pokemon) => (
           <PokemonCard
             key={pokemon.id}
@@ -96,3 +108,43 @@ export async function getStaticProps() {
 }
 
 export default HomePage;
+
+// Styles
+const styles = {
+  container: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '20px',
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: '2.5rem',
+    color: '#2c3e50',
+    marginBottom: '20px',
+  },
+  sortMenu: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '10px',
+    marginBottom: '20px',
+  },
+  button: {
+    padding: '10px 20px',
+    borderRadius: '20px',
+    border: '2px solid #3498db',
+    backgroundColor: 'white',
+    color: '#3498db',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+  },
+  activeButton: {
+    backgroundColor: '#3498db',
+    color: 'white',
+  },
+  cardContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '20px',
+  },
+};
